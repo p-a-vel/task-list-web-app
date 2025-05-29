@@ -1,0 +1,123 @@
+<div class="sales-log-container">
+    <div class="header-row">
+      <h2 class="sales-log-title">SALES LOG</h2>
+      <button class="new-task-btn">New Task</button>
+    </div>  <div class="filter-search">
+      <div class="task-type-chip">Task Type <span class="chip-close">×</span></div>
+      <input type="text" placeholder="Search" class="search-input" />
+    </div>  <table class="sales-log-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Entity Name</th>
+          <th>Task Type</th>
+          <th>Time</th>
+          <th>Contact Person</th>
+          <th>Notes</th>
+          <th>Status</th>
+          <th>Options</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of tasks">
+          <td>{{ task.date }}</td>
+          <td><a href="#" class="entity-link">{{ task.entity }}</a></td>
+          <td><span class="icon-call">📞</span> Call</td>
+          <td>{{ task.time }}</td>
+          <td>{{ task.contact }}</td>
+          <td>
+            <span *ngIf="task.notes">{{ task.notes }}</span>
+            <button *ngIf="!task.notes" class="add-note-btn">Add Note</button>
+          </td>
+          <td>
+            <span [class.status-open]="task.status === 'Open'" [class.status-closed]="task.status === 'Closed'">{{ task.status }}</span>
+          </td>
+          <td><button class="options-btn">Options</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div><style>
+  .sales-log-container {
+    padding: 24px;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+  }
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .sales-log-title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .new-task-btn {
+    background-color: black;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .filter-search {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .task-type-chip {
+    background-color: #e7f3ff;
+    color: #0b5ed7;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+  }
+  .chip-close {
+    margin-left: 6px;
+    cursor: pointer;
+  }
+  .search-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 300px;
+  }
+  .sales-log-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+  }
+  .sales-log-table th, .sales-log-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  .sales-log-table th {
+    background-color: #f1f1f1;
+    font-weight: 600;
+  }
+  .entity-link {
+    color: #0b5ed7;
+    text-decoration: none;
+  }
+  .entity-link:hover {
+    text-decoration: underline;
+  }
+  .add-note-btn, .options-btn {
+    color: #0b5ed7;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .status-open {
+    color: #f39c12;
+  }
+  .status-closed {
+    color: #28a745;
+  }
+  </style>
+  
