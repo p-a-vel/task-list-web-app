@@ -1,0 +1,105 @@
+[debug] [2025-06-04T18:01:45.990Z] ----------------------------------------------------------------------
+[debug] [2025-06-04T18:01:45.993Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\prabh\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-06-04T18:01:45.993Z] CLI Version:   14.5.1
+[debug] [2025-06-04T18:01:45.993Z] Platform:      win32
+[debug] [2025-06-04T18:01:45.994Z] Node Version:  v20.16.0
+[debug] [2025-06-04T18:01:45.994Z] Time:          Wed Jun 04 2025 23:31:45 GMT+0530 (India Standard Time)
+[debug] [2025-06-04T18:01:45.994Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-06-04T18:01:45.999Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-06-04T18:01:46.000Z] > authorizing via signed-in user (prabhatkumar08445@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  P:\New folder\deva\task-list-web-application
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2025-06-04T18:01:51.879Z] Checked if tokens are valid: true, expires at: 1749063695912
+[debug] [2025-06-04T18:01:51.879Z] Checked if tokens are valid: true, expires at: 1749063695912
+[debug] [2025-06-04T18:01:51.881Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2025-06-04T18:01:52.995Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2025-06-04T18:01:52.995Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project task-list-web-application (task-list-web-application) 
+[info] 
+=== Hosting Setup
+[debug] [2025-06-04T18:01:54.299Z] Checked if tokens are valid: true, expires at: 1749063695912
+[debug] [2025-06-04T18:01:54.299Z] Checked if tokens are valid: true, expires at: 1749063695912
+[debug] [2025-06-04T18:01:54.299Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/task-list-web-application [none]
+[debug] [2025-06-04T18:01:54.814Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/task-list-web-application 200
+[debug] [2025-06-04T18:01:54.815Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/task-list-web-application {"projectId":"task-list-web-application","projectNumber":"710164152704","displayName":"task-list-web-application","name":"projects/task-list-web-application","resources":{"hostingSite":"task-list-web-application"},"state":"ACTIVE","etag":"1_0e4782e1-774c-41a2-bf12-f1bddc31930f"}
+[info] 
+[info] Your public directory is the folder (relative to your project directory) that
+[info] will contain Hosting assets to be uploaded with firebase deploy. If you
+[info] have a build process for your assets, use your build's output directory.
+[info] 
+[debug] [2025-06-04T18:02:00.616Z] ExitPromptError: User force closed the prompt with SIGINT
+    at Interface.sigint (C:\Users\prabh\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\@inquirer\core\dist\commonjs\lib\create-prompt.js:101:37)
+    at Interface.emit (node:events:519:28)
+    at Interface.emit (node:domain:488:12)
+    at [_ttyWrite] [as _ttyWrite] (node:internal/readline/interface:1126:18)
+    at ReadStream.onkeypress (node:internal/readline/interface:265:20)
+    at ReadStream.emit (node:events:531:35)
+    at ReadStream.emit (node:domain:488:12)
+    at emitKeys (node:internal/readline/utils:371:14)
+    at emitKeys.next (<anonymous>)
+    at ReadStream.onData (node:internal/readline/emitKeypressEvents:64:36)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2025-06-04T18:09:45.141Z] ----------------------------------------------------------------------
+[debug] [2025-06-04T18:09:45.144Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\prabh\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-06-04T18:09:45.145Z] CLI Version:   14.5.1
+[debug] [2025-06-04T18:09:45.145Z] Platform:      win32
+[debug] [2025-06-04T18:09:45.145Z] Node Version:  v20.16.0
+[debug] [2025-06-04T18:09:45.145Z] Time:          Wed Jun 04 2025 23:39:45 GMT+0530 (India Standard Time)
+[debug] [2025-06-04T18:09:45.145Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-06-04T18:09:45.151Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-06-04T18:09:45.151Z] > authorizing via signed-in user (prabhatkumar08445@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  P:\New folder\deva\task-list-web-application
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2025-06-04T18:09:54.055Z] Checked if tokens are valid: true, expires at: 1749063695912
+[debug] [2025-06-04T18:09:54.055Z] Checked if tokens are valid: true, expires at: 1749063695912
+[debug] [2025-06-04T18:09:54.057Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2025-06-04T18:09:55.235Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2025-06-04T18:09:55.235Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project task-list-web-application (task-list-web-application) 
+[info] 
+=== Hosting Setup
+[debug] [2025-06-04T18:09:55.828Z] Checked if tokens are valid: true, expires at: 1749063695912
+[debug] [2025-06-04T18:09:55.828Z] Checked if tokens are valid: true, expires at: 1749063695912
+[debug] [2025-06-04T18:09:55.828Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/task-list-web-application [none]
+[debug] [2025-06-04T18:09:56.237Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/task-list-web-application 200
+[debug] [2025-06-04T18:09:56.237Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/task-list-web-application {"projectId":"task-list-web-application","projectNumber":"710164152704","displayName":"task-list-web-application","name":"projects/task-list-web-application","resources":{"hostingSite":"task-list-web-application"},"state":"ACTIVE","etag":"1_0e4782e1-774c-41a2-bf12-f1bddc31930f"}
+[info] 
+[info] Your public directory is the folder (relative to your project directory) that
+[info] will contain Hosting assets to be uploaded with firebase deploy. If you
+[info] have a build process for your assets, use your build's output directory.
+[info] 

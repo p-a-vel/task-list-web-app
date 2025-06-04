@@ -1,57 +1,152 @@
 <div class="sales-log-container">
-    <div class="header-row">
-      <h2 class="sales-log-title">SALES LOG</h2>
-      <button class="new-task-btn">New Task</button>
-    </div>  <div class="filter-search">
-      <div class="task-type-chip">Task Type <span class="chip-close">×</span></div>
-      <input type="text" placeholder="Search" class="search-input" />
-    </div>  <table class="sales-log-table">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Entity Name</th>
-          <th>Task Type</th>
-          <th>Time</th>
-          <th>Contact Person</th>
-          <th>Notes</th>
-          <th>Status</th>
-          <th>Options</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let task of tasks">
-          <td>{{ task.date }}</td>
-          <td><a href="#" class="entity-link">{{ task.entity }}</a></td>
-          <td><span class="icon-call">📞</span> Call</td>
-          <td>{{ task.time }}</td>
-          <td>{{ task.contact }}</td>
-          <td>
-            <span *ngIf="task.notes">{{ task.notes }}</span>
-            <button *ngIf="!task.notes" class="add-note-btn">Add Note</button>
-          </td>
-          <td>
-            <span [class.status-open]="task.status === 'Open'" [class.status-closed]="task.status === 'Closed'">{{ task.status }}</span>
-          </td>
-          <td><button class="options-btn">Options</button></td>
-        </tr>
-      </tbody>
-    </table>
-  </div><style>
+  <div class="header-row">
+    <h2 class="sales-log-title">SALES LOG</h2>
+    <button class="new-task-btn" (click)="openNewTaskForm()">New Task</button>
+  </div>
+
+  <div *ngIf="showNewTaskForm" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>NEW TASK</h3>
+        <span class="modal-close" (click)="cancelForm()">×</span>
+      </div>
+
+      <div class="status-toggle">
+        <button [class.active]="newTask.status === 'Open'" (click)="newTask.status = 'Open'">Open</button>
+        <button [class.active]="newTask.status === 'Closed'" (click)="newTask.status = 'Closed'">Closed</button>
+      </div>
+
+      <div class="modal-body">
+        <input type="text" placeholder="Entity name" [(ngModel)]="newTask.entity" required />
+        <div class="row">
+          <input type="date" [(ngModel)]="newTask.date" required />
+          <div class="time-group">
+            <select [(ngModel)]="newTask.timeHour" required>
+              <option *ngFor="let h of hours" [value]="h">{{ h }}</option>
+            </select>
+            <select [(ngModel)]="newTask.timeMinute" required>
+              <option *ngFor="let m of minutes" [value]="m">{{ m }}</option>
+            </select>
+            <select [(ngModel)]="newTask.timePeriod" required>
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </div>
+        </div>
+        <select class="task-type-dropdown" [(ngModel)]="newTask.taskType" required>
+          <option value="Call">📞 Call</option>
+          <option value="Email">📧 Email</option>
+          <option value="Meeting">📅 Meeting</option>
+        </select>
+        <input type="text" placeholder="Phone number" [(ngModel)]="newTask.phone" required pattern="^\d{10}$" />
+        <input type="text" placeholder="Contact person" [(ngModel)]="newTask.contact" required />
+        <textarea placeholder="Note (optional)" [(ngModel)]="newTask.notes"></textarea>
+
+        <div class="modal-footer">
+          <button class="cancel-btn" (click)="cancelForm()" [disabled]="isSubmitting">Cancel</button>
+          <button class="save-btn" (click)="addTask()" [disabled]="isSubmitting">
+            <span *ngIf="!isSubmitting">Save</span>
+            <span *ngIf="isSubmitting">Saving...</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-search">
+    <div class="task-type-chip">Task Type <span class="chip-close">×</span></div>
+    <input type="text" placeholder="Search" class="search-input" />
+  </div>
+
+  <table class="sales-log-table">
+   <thead>
+  <tr>
+    <th (click)="sortTasks('date')">
+      Date
+      <span class="sort-icon" *ngIf="sortField === 'date'">
+         {{ sortField === 'date' ? (sortDirection === 'asc' ? '↑' : '↓') : '⇅' }}
+      </span>
+    </th>
+    <th (click)="sortTasks('entity')">
+      Entity Name
+      <span class="sort-icon" *ngIf="sortField === 'entity'">
+         {{ sortField === 'entity' ? (sortDirection === 'asc' ? '↑' : '↓') : '⇅' }}
+      </span>
+    </th>
+    <th (click)="sortTasks('taskType')">
+      Task Type
+      <span class="sort-icon" *ngIf="sortField === 'taskType'">
+         {{ sortField === 'taskType' ? (sortDirection === 'asc' ? '↑' : '↓') : '⇅' }}
+      </span>
+    </th>
+    <th>Time</th>
+    <th (click)="sortTasks('contact')">
+      Contact Person
+      <span class="sort-icon" *ngIf="sortField === 'contact'">
+          {{ sortField === 'contact' ? (sortDirection === 'asc' ? '↑' : '↓') : '⇅' }}
+      </span>
+    </th>
+    <th>Phone</th>
+    <th>Notes</th>
+    <th (click)="sortTasks('status')">
+      Status
+      <span class="sort-icon" *ngIf="sortField === 'status'">
+         {{ sortField === 'status' ? (sortDirection === 'asc' ? '↑' : '↓') : '⇅' }}
+      </span>
+    </th>
+    <th>Options</th>
+  </tr>
+</thead>
+
+
+    <tbody>
+      <tr *ngFor="let task of tasks">
+        <td>{{ task.date }}</td>
+        <td><a href="#" class="entity-link" [innerHtml]="sanitizeHtml(task.entity)"></a></td>
+        <td>
+          <span *ngIf="task.taskType === 'Call'" class="task-type-item">📞 Call</span>
+          <span *ngIf="task.taskType === 'Email'" class="task-type-item">📧 Email</span>
+          <span *ngIf="task.taskType === 'Meeting'" class="task-type-item">📅 Meeting</span>
+        </td>
+        <td>{{ task.time }}</td>
+        <td>{{ task.contact }}</td>
+        <td>{{ task.phone }}</td>
+        <td>
+          <span *ngIf="task.notes">{{ task.notes }}</span>
+          <button *ngIf="!task.notes" class="add-note-btn">Add Note</button>
+        </td>
+        <td>
+          <span [class.status-open]="task.status === 'Open'" [class.status-closed]="task.status === 'Closed'">
+            {{ task.status }}
+          </span>
+        </td>
+        <td>
+          <button class="options-btn" (click)="deleteTask(task.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<style>
   .sales-log-container {
     padding: 24px;
     background-color: #f8f9fa;
     font-family: Arial, sans-serif;
   }
+  
   .header-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
   }
+  
   .sales-log-title {
     font-size: 20px;
     font-weight: bold;
   }
+  
   .new-task-btn {
     background-color: black;
     color: white;
@@ -59,13 +154,20 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.2s;
   }
+
+  .new-task-btn:hover {
+    background-color: #333;
+  }
+  
   .filter-search {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
   }
+  
   .task-type-chip {
     background-color: #e7f3ff;
     color: #0b5ed7;
@@ -75,49 +177,323 @@
     display: flex;
     align-items: center;
   }
+  
   .chip-close {
     margin-left: 6px;
     cursor: pointer;
   }
+
+  .chip-close:hover {
+    color: #0056b3;
+  }
+  
   .search-input {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
     width: 300px;
   }
+
+  .search-input:focus {
+    outline: none;
+    border-color: #0b5ed7;
+  }
+  
   .sales-log-table {
     width: 100%;
     border-collapse: collapse;
     background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
-  .sales-log-table th, .sales-log-table td {
+  
+  .sales-log-table th, 
+  .sales-log-table td {
     padding: 12px;
     border: 1px solid #ddd;
     text-align: left;
   }
+  
   .sales-log-table th {
     background-color: #f1f1f1;
     font-weight: 600;
   }
+
+  .task-type-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
   .entity-link {
     color: #0b5ed7;
     text-decoration: none;
   }
+  
   .entity-link:hover {
     text-decoration: underline;
   }
-  .add-note-btn, .options-btn {
+  
+  .add-note-btn, 
+  .options-btn {
     color: #0b5ed7;
     background: none;
     border: none;
     cursor: pointer;
     text-decoration: underline;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
   }
+
+th {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  padding-right: 10px;
+  position: relative;
+}
+
+.sort-icon {
+  margin-left: 6px;
+  font-size: 0.85rem;
+  color: #444;
+  vertical-align: middle;
+}
+
+
+  .add-note-btn:hover,
+  .options-btn:hover {
+    background-color: #f0f8ff;
+  }
+  
   .status-open {
     color: #f39c12;
+    font-weight: 500;
   }
+  
   .status-closed {
     color: #28a745;
+    font-weight: 500;
   }
-  </style>
   
+  /* Modal styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .modal-content {
+    background: white;
+    width: 400px;
+    padding: 24px;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .modal-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #333;
+  }
+
+  .modal-close {
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s;
+  }
+
+  .modal-close:hover {
+    color: #333;
+  }
+
+  .status-toggle {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+
+  .status-toggle button {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    background: #f8f9fa;
+    cursor: pointer;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+
+  .status-toggle button.active {
+    background: #f97316;
+    color: white;
+    border-color: #f97316;
+  }
+
+  .status-toggle button:hover:not(.active) {
+    background: #e9ecef;
+  }
+
+  .modal-body input,
+  .modal-body select,
+  .modal-body textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: 14px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background-color: #f7f7f7;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+  }
+
+  .modal-body input:focus,
+  .modal-body select:focus,
+  .modal-body textarea:focus {
+    outline: none;
+    border-color: #0b5ed7;
+  }
+
+  .modal-body textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+
+  .row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+
+  .row input[type="date"] {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  .time-group {
+    display: flex;
+    gap: 6px;
+    flex: 1;
+  }
+
+  .time-group select {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  .task-type-dropdown {
+    font-size: 14px;
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+  }
+
+  .cancel-btn {
+    background: none;
+    border: none;
+    font-weight: 500;
+    color: #666;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: color 0.2s;
+  }
+
+  .cancel-btn:hover {
+    color: #333;
+  }
+
+  .cancel-btn:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+  }
+
+  .save-btn {
+    background-color: #0d3b66;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    min-width: 80px;
+  }
+
+  .save-btn:hover {
+    background-color: #0a2d4d;
+  }
+
+  .save-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  /* Empty state styles */
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+  }
+
+  .empty-state h3 {
+    margin-bottom: 8px;
+    color: #333;
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .sales-log-container {
+      padding: 16px;
+    }
+
+    .search-input {
+      width: 200px;
+    }
+
+    .modal-content {
+      width: 90%;
+      max-width: 400px;
+      margin: 20px;
+    }
+
+    .sales-log-table {
+      font-size: 14px;
+    }
+
+    .sales-log-table th,
+    .sales-log-table td {
+      padding: 8px;
+    }
+  }
+</style>
