@@ -42,7 +42,7 @@ export class TodoComponent implements OnInit {
   sortField: string = '';
   sortDirection: 'asc' | 'desc' = 'asc';
 
-  private apiUrl = 'http://127.0.0.1:5000/tasks';
+  private apiUrl = 'https://task-list-web-app.onrender.com/tasks';
 
   hours = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
   minutes = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0'));

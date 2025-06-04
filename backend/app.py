@@ -11,6 +11,11 @@ CORS(app)
 # Add your database name to the URI
 app.config["MONGO_URI"] = "mongodb+srv://dobriyaldevashish:Devashish%4023@cluster0.v8allzh.mongodb.net/todoapp?retryWrites=true&w=majority&appName=Cluster0"
 
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))  # default to 5000 if PORT is not set
+    app.run(host="0.0.0.0", port=port, debug=True)
+    
 try:
     mongo = PyMongo(app)
     # Test the connection
