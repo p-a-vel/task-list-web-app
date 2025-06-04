@@ -98,7 +98,7 @@ export class TodoComponent implements OnInit {
     return taskDate.toISOString();
   }
 
-  
+
   addTask() {
     if (
       !this.newTask.entity.trim() ||
